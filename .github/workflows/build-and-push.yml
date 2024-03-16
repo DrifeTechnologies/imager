@@ -16,14 +16,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Parse pushed tag
-        run: |
-          ./parse_tag.sh ${{ github.ref_name }}
-
       - name: Build and push custom image
         run: |
+          ./parse_tag.sh ${{ github.ref_name }}
           docker build -t drifetech/custom-${{ env.LANGUAGE }}:${{ env.VERSION }} dockerfiles/${{ env.LANGUAGE }}/Dockerfile
 
       - name: Push image
         run: |
+          ./parse_tag.sh ${{ github.ref_name }}
           docker push drifetech/custom-${{ env.LANGUAGE }}:${{ env.VERSION }}
