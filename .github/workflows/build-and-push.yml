@@ -25,6 +25,7 @@ jobs:
         run: |
           printf '%s\n' "$LANGUAGE"
           printf '%s\n' "$VERSION"
+          docker buildx create --name multiarch --driver docker-container --use
           docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/custom-${{ env.LANGUAGE }}:${{ env.VERSION }} dockerfiles/${{ env.LANGUAGE }}/ --build-arg VERSION=${{ env.VERSION }}
 
       - name: Push image
