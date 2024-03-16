@@ -3,7 +3,6 @@ name: Build and Push Custom Images
 on:
   push:
     tags:
-      - *
     branches-ignore:
       - '*'
 
