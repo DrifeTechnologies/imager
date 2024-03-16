@@ -16,9 +16,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Parse Tag
+        run: |
+          echo "APP=imager" >> "$GITHUB_ENV"
+
       - name: Build and push custom image
         run: |
+          printf '%s\n' "$APP"
           ./parse_tag.sh ${{ github.ref_name }}
+          echo "LANGUAGE=golang" >> "$GITHUB_ENV"
           docker build -t drifetech/custom-${{ env.LANGUAGE }}:${{ env.VERSION }} dockerfiles/${{ env.LANGUAGE }}/Dockerfile
 
       - name: Push image
