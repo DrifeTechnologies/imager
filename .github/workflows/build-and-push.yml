@@ -21,20 +21,11 @@ jobs:
           echo "LANGUAGE=$(./parse_language.sh ${{ github.ref_name }})" >> "$GITHUB_ENV"
           echo "VERSION=$(./parse_version.sh ${{ github.ref_name }})" >> "$GITHUB_ENV"
 
-      # - name: Build base image
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: ./dockerfiles/${{ env.LANGUAGE }}
-      #     tags: drifetech/custom-${{ env.LANGUAGE }}:${{ env.VERSION }}
-      #     push: false
-      #     build-args: |
-      #       VERSION=${{ env.VERSION }}
-
       - name: Build and push custom image
         run: |
           printf '%s\n' "$LANGUAGE"
           printf '%s\n' "$VERSION"
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/custom-${{ env.LANGUAGE }}:${{ env.VERSION }} dockerfiles/${{ env.LANGUAGE }}/ --build-arg VERSION=${{ env.VERSION }}
+          docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/custom-${{ env.LANGUAGE }}:${{ env.VERSION }} dockerfiles/${{ env.LANGUAGE }}/ --build-arg VERSION=${{ env.VERSION }}
 
       - name: Push image
         run: |
