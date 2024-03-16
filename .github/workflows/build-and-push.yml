@@ -18,8 +18,7 @@ jobs:
 
       - name: Parse pushed tag
         run: |
-          ls -al
-          sh parse-tag.sh ${{ github.ref }}
+          ./parse_tag.sh ${{ github.ref }}
 
       - name: Build and push custom image
         run: |
