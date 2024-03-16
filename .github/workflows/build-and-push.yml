@@ -4,9 +4,6 @@ on:
   push:
     tags:
     branches-ignore:
-      - '*'         # matches every branch that doesn't contain a '/'
-      - '*/*'       # matches every branch containing a single '/'
-      - '**'        # matches every branch
       - '!main'
 
 jobs:
