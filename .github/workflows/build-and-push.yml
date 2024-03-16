@@ -3,6 +3,7 @@ name: Build and Push Custom Images
 on:
   push:
     tags:
+      - '*'
 
 jobs:
   build-and-push:
@@ -16,14 +17,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Parse pushed tag
+      - name: Parse Tag
         run: |
-          ./parse-tag.sh ${{ github.ref }}
+          echo "LANGUAGE=$(./parse_language.sh ${{ github.ref_name }})" >> "$GITHUB_ENV"
+          echo "VERSION=$(./parse_version.sh ${{ github.ref_name }})" >> "$GITHUB_ENV"
 
-      - name: Build and push custom image
+      - name: Build and Push
         run: |
-          docker build -t drifetech/custom-${{ env.LANGUAGE }}:${{ env.VERSION }} dockerfiles/${{ env.LANGUAGE }}/Dockerfile
-
-      - name: Push image
-        run: |
-          docker push drifetech/custom-${{ env.LANGUAGE }}:${{ env.VERSION }}
+          docker buildx create --name multiarch --driver docker-container --use
+          docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/custom-${{ env.LANGUAGE }}:${{ env.VERSION }} dockerfiles/${{ env.LANGUAGE }}/ --build-arg VERSION=${{ env.VERSION }} --push

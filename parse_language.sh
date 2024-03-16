@@ -2,7 +2,7 @@
 
 # Extract language and version from the tag
 TAG="$1"  # Script argument will be the tag name
-IFS=':' read -r language version <<< "$TAG"
+IFS=',' read -r language version <<< "$TAG"
 
 # Validate extracted values (optional)
 if [[ -z "$language" || -z "$version" ]]; then
@@ -10,9 +10,4 @@ if [[ -z "$language" || -z "$version" ]]; then
   exit 1
 fi
 
-# Set environment variables
-export LANGUAGE="$language"
-export VERSION="$version"
-
-echo "Language: $language"
-echo "Version: $version"
+echo $language
