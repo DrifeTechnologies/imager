@@ -10,12 +10,4 @@ if [[ -z "$language" || -z "$version" ]]; then
   exit 1
 fi
 
-# # Set environment variables
-# export LANGUAGE="$language"
-# export VERSION="$version"
-
-echo "LANGUAGE=$language" >> "$GITHUB_ENV"
-echo "VERSION=$version" >> "$GITHUB_ENV"
-
-echo "Language: $language"
-echo "Version: $version"
+echo $language
