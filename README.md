@@ -7,5 +7,6 @@ Imager builds custom docker images with required tooling installed, meant to be 
 2. In the `Dockerfile`, first line should define a default version. Eg: `ARG VERSION=1.21-alpine //Default`
 3. In the `Dockerfile`, when using a base image, provide its version using the VERSION variable. Eg: `FROM golang:${VERSION}`
 4. Add your modifications for the custom image. Push the changes
-5. Create a git tag based on this format `<language>,<version-including-base-if-applicable>`. Eg: `golang,1.21.6-alpine`
-6. Push the git tag
+5. Create a repository with the same name as the custom image, under the linked Docker Hub account. Eg: `custom-golang`
+6. Create a git tag based on this format `<language>,<version-including-base-if-applicable>`. Eg: `golang,1.21.6-alpine`
+7. Push the git tag
