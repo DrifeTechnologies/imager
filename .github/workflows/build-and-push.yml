@@ -25,7 +25,7 @@ jobs:
         run: |
           printf '%s\n' "$LANGUAGE"
           printf '%s\n' "$VERSION"
-          docker build -t drifetech/custom-${{ env.LANGUAGE }}:${{ env.VERSION }} dockerfiles/${{ env.LANGUAGE }}/
+          docker build -t drifetech/custom-${{ env.LANGUAGE }}:${{ env.VERSION }} dockerfiles/${{ env.LANGUAGE }}/ --build-arg VERSION=${{ env.VERSION }}
 
       - name: Push image
         run: |
