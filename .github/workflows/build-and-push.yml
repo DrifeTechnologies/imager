@@ -1,0 +1,29 @@
+name: Build and Push Custom Images
+
+on:
+  push:
+    tags:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Parse pushed tag
+        run: |
+          ./parse-tag.sh ${{ github.ref }}
+
+      - name: Build and push custom image
+        run: |
+          docker build -t drifetech/custom-${{ env.LANGUAGE }}:${{ env.VERSION }} dockerfiles/${{ env.LANGUAGE }}/Dockerfile
+
+      - name: Push image
+        run: |
+          docker push drifetech/custom-${{ env.LANGUAGE }}:${{ env.VERSION }}
